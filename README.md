@@ -8,6 +8,7 @@ Installation
 ------------
     $ git clone https://github.com/trollandtoad/node-rackspace-cdn.git
     $ cd node-rackspace-cdn
+    $ cp config.sample.json config.json
     $ npm install pkgcloud
 
 Usage
