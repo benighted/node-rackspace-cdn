@@ -150,7 +150,7 @@ var uploadFiles = function (map, callback) {
   };
 
   if (Object.keys(map).length > 0) for (var localPath in map) {
-    if (!Object.keys(map[localPath]).length) {
+    if (typeof map[localPath] != 'object' || !Object.keys(map[localPath]).length) {
       delete map[localPath];
       continue;
     }
