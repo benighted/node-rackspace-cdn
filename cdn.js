@@ -155,7 +155,7 @@ var uploadFiles = function (map, callback) {
   };
 
   if (Object.keys(map).length > 0) for (var localPath in map) {
-    if (!Object.keys(map[localPath]).length) {
+    if (typeof map[localPath] != 'object' || !Object.keys(map[localPath]).length) {
       delete map[localPath];
       continue;
     }
@@ -165,6 +165,7 @@ var uploadFiles = function (map, callback) {
       uploadFile(localPath + path.sep + map[localPath].shift(), function (err) {
         --uploadProcs;
         if (err) console.error(err);
+        if (!uploadProcs) done();
       });
     }
 
