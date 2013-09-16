@@ -48,7 +48,8 @@ var findFiles = function (basePath, callback) {
     procs++;
     console.log('Reading from ' + filePath);
     fs.readdir(filePath, function (err, files) {
-      if (err) return callback(err);
+      var readCount = 0;
+      if (err) console.log(err);
       if (!map[filePath]) map[filePath] = [];
 
       for (var i = 0, len = files.length; i < len; i++) {
@@ -63,6 +64,7 @@ var findFiles = function (basePath, callback) {
           } else if (stat.isFile()) {
             if (!mtimeFilter || stat.mtime.getTime() > mtimeFilter) {
               map[filePath].push(files[i]);
+              readCount++;
             }
           }
         } catch (err) {
@@ -71,7 +73,10 @@ var findFiles = function (basePath, callback) {
       }
 
       procs--;
-      if (callback && !procs) callback(map);
+      if (callback && !procs) {
+        console.log('Found ' + readCount + ' file' + (readCount === 1 ? '' : 's') + '.');
+        callback(undefined, map);
+      }
     });
   })(basePath, callback);
 };
@@ -216,7 +221,7 @@ try {
   if (!config.paths || !config.paths.length) throw printUsage();
   else config.paths.forEach(function (basePath, i) {
     if (!basePath) return;
-    findFiles(basePath, function (map, err) {
+    findFiles(basePath, function (err, map) {
       if (err) throw err;
       createContainer(map, function (err) {
         if (err) throw err;
