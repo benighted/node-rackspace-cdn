@@ -160,6 +160,7 @@ var uploadFiles = function (map, callback) {
       uploadFile(localPath + path.sep + map[localPath].shift(), function (err) {
         --uploadProcs;
         if (err) console.error(err);
+        if (!uploadProcs) done();
       });
     }
 
