@@ -137,9 +137,9 @@ var uploadFiles = function (map, callback) {
     console.log('Uploading file: ' + localPath);
     try {
       client.upload({
-        region: 'ORD',
         local: localPath,
         remote: remotePath,
+        region: config.region,
         container: config.container
       }, function (err, result) {
         var endTime = new Date().getTime();
